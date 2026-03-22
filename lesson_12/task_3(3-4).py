@@ -110,3 +110,67 @@ b_year = l.find_by_year(1835)
 for book in b_year:
     print(book.info())
 l.taken_books()
+
+
+
+# Задание 4. Класс «Кошелёк»
+# Создай класс Wallet, описывающий электронный кошелёк.
+# Требования:
+# 1. Приватный атрибут _balance.
+# 2. Методы:
+# o deposit(amount) — пополнить кошелёк.
+# o withdraw(amount) — снять деньги (если хватает).
+# o transfer_to(other_wallet, amount) — перевести деньги другому кошельку.
+# o __apply_bonus() (приватный метод) — добавить 1% бонуса к балансу,
+# вызывается автоматически после каждой операции пополнения.
+# 3. property balance — позволяет просматривать баланс.
+# 4. Статический метод wallet_info(wallet) — выводит краткую информацию о кошельке.
+
+class Wallet:
+    def __init__(self) -> None:
+        self._balance = 0.0
+
+    def __apply_bonus(self) -> None:
+        self._balance *= 1.01
+
+    def deposit(self, amount: float) -> None:
+        self._balance += amount
+        self.__apply_bonus()
+        print(f"Кошелек пополнен на {amount}")
+
+    def withdraw(self, amount: float) -> None:
+        if amount > self._balance:
+            print("Недостаточно денег на счете для выдачи")
+        else:
+            self._balance -= amount
+
+    def transfer_to(self, other_wallet: Wallet, amount: float) -> None:
+        if amount > self._balance:
+            print("Недостаточно денег на счете для перевода")
+        else:
+            self._balance = self._balance - amount
+            other_wallet.deposit(amount)
+            print(f"Перевод осуществлен, сумма перевода: {amount}")
+
+
+
+    def property_balance(self) -> str: #В принципе, аналог статического, но такое задание
+        return f"Баланс счета: {self._balance}"
+
+    @staticmethod
+    def wallet_info(wallet: Wallet) -> str:
+        return f"Баланс счета: {wallet._balance}"
+
+
+w = Wallet()
+ww = Wallet()
+print(w.wallet_info(w))
+w.deposit(100)
+print(w.wallet_info(w))
+w.withdraw(500)
+w.transfer_to(ww, 500)
+print(ww.wallet_info(ww))
+w.transfer_to(ww, 100)
+# print(ww.wallet_info(ww))
+# print(w.wallet_info(w))
+print(w.property_balance())
