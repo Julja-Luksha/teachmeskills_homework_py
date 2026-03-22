@@ -121,14 +121,16 @@ class Store:
 
 
 c = Store("Gippo", [])
-c.add_product("chokolate", 10, 2)
+c.add_product("choсolate", 10, 2)
 c.add_product("tea", 30, 3)
 print(c.name)
 # print(c.product_list)
-# c.update_price("chokolate", 15)
+# c.update_price("choсolate", 15)
 # print(c.product_list)
-# c.sell_product("chokolate", 5)
+# c.sell_product("choсolate", 5)
 # print(c.product_list)
 # print(c.get_inventory())
 print(c.find_most_expensive())
 print(c.find_cheapest())
+
+
