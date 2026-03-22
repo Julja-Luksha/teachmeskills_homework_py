@@ -120,7 +120,7 @@ class RealString:
     def __len__(self) -> int:
         return len(self.string)
 
-    def get_len(self, other) -> int:
+    def _get_len(self, other) -> int:
         if isinstance(other, RealString):
             return len(other)
         elif isinstance(other, str):
