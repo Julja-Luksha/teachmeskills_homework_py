@@ -18,6 +18,7 @@
 # заказам.
 # o list_orders_by_status(status) — возвращает все заказы с определённым
 # статусом.
+import datetime
 from typing import Optional, List
 
 
@@ -104,3 +105,64 @@ order2.change_status("завершен")
 print(system_order.get_total_revenue())
 order1.change_status("завершен")
 print(system_order.get_total_revenue())
+
+
+# Задание 6. Класс «Автомобиль»
+# Создай класс Car, описывающий автомобиль.
+# Требования:
+# 1. Атрибуты: марка, модель, год, уровень топлива (в литрах), пробег.
+# 2. Методы:
+# o drive(distance) — увеличить пробег и уменьшить топливо (расход 0.1 л на 1
+# км).
+# o refuel(liters) — заправить автомобиль.
+# o info() — вывести состояние автомобиля.
+# o __check_fuel() (приватный) — проверяет, хватит ли топлива для поездки.
+# o age() (метод экземпляра) — возвращает возраст автомобиля.
+# 3. classmethod from_string(cls, data) — создаёт объект из строки вида "Toyota, Corolla, 2015".
+
+class Car:
+    def __init__(self, mark: str, model: str, year: int, fuel: float, km_age: float) -> None:
+        self.mark = mark
+        self.model = model
+        self.year = year
+        self.fuel = fuel
+        self.km_age = km_age
+
+    def drive(self, distance: float) -> bool:
+        if self.__check_fuel(distance):
+            self.km_age += distance
+            self.fuel -= 0.1 * distance
+            return True
+        return False
+
+    def refuel(self, liters: int) -> None:
+        self.fuel += liters
+
+    def info(self) -> str:
+        print("Информация об автомобиле:")
+        return (f"Бренд: {self.mark}| Модель: {self.model}| Год: {self.year}|"
+                f" Количество топлива, л: {self.fuel}| Пробег, км: {self.km_age}")
+
+    def __check_fuel(self, km_age: float) -> bool:
+        if km_age <= self.fuel / 0.1:
+            return True
+        return False
+
+    def age(self):
+        return datetime.datetime.now().year - self.year
+
+    @classmethod
+    def from_string(cls, data):
+        mark, model, year = [x.strip() for x in data.split(",")]
+        return cls(mark, model, year, fuel=0.0, km_age=0.0)
+
+c = Car("Mazda", "RX-8", 2004, 60, 130000)
+print(c.info())
+print("Возраст:", c.age())
+r = c.drive(300)
+print("Поездка возможна?", r)
+c.refuel(20)
+print(c.info())
+c1 = Car.from_string("Subaru, WRX, 2023")
+print(c1.info())
+
